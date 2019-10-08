@@ -1,0 +1,25 @@
+{
+    "name": "jelion/mvc",
+    "description": "MVC framework",
+    "type": "project",
+    "require": {
+        "catfan/medoo": "dev-master",
+        "klein/klein": "dev-master",
+        "ext-json": "*",
+        "irazasyed/telegram-bot-sdk": "^3.0@dev",
+        "php": ">=7.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jelion",
+            "email": "djoniqaz@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "": "./app"
+        }
+    }
+}
