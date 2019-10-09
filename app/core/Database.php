@@ -17,7 +17,7 @@ class Database extends Medoo
     }
 
     static function instance(){
-        if (self::$instance instanceof self){
+        if (!self::$instance instanceof self){
             self::$instance = new self();
         }
         return self::$instance;
