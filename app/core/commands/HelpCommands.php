@@ -10,7 +10,7 @@ class HelpCommands extends Command
     protected $name = "help";
     protected $description = "This is help dude";
 
-    public function handle($arguments)
+    public function handle($args)
     {
         $response = '';
         $commands = $this->getTelegram()->getCommands();

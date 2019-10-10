@@ -12,23 +12,24 @@ class Telegram
     private static $instance;
 
 
-    private function __construct()
+    private function __construct($cfg)
     {
-        self::$instance = new Api("926261829:AAE9WNcAGnfzlucz4pL1a-F6mYrCukTB1-M");
+        self::$instance = new Api($cfg["token"]);
 
-        self::$instance->addCommands([HelpCommands::class]);
+        if(isset($cfg["commands"])){
+            self::$instance->addCommands($cfg["commands"]);
+        }
     }
 
-    private static function init()
+    static function init($cfg)
     {
         if (!self::$instance instanceof Api) {
-            new self();
+            new self($cfg);
         }
     }
 
     static function getUpdates(array $params = [], $shouldEmitEvents = true)
     {
-        self::init();
         return self::$instance->getUpdates($params, $shouldEmitEvents);
     }
 
@@ -39,19 +40,31 @@ class Telegram
         ]);
     }
 
-    static function eachUpdate(callable $callback){
-        $update_id = Updates::max("id");
-        foreach (self::getUpdates([
-            "offset" => $update_id + 1
-        ]) as $update){
-            self::$instance->commandsHandler(false); // , ["timeout" => 30]
+    static function handle(callable $callback){
+        $updates = self::$instance->commandsHandler(false);
+//        $update_id = self::getLastUpdateId() ?? -1;
+//        $updates = self::getUpdates([
+//            "offset" => $update_id + 1
+//        ]);
+//
+//
+//
+//        foreach ($updates as $update){
+//            self::setLastUpdateId($update["update_id"]);
+//
+//            self::$instance->commandsHandler(false); // , ["timeout" => 30]
+//
+////            if ($update->getMessage()["text"][0] != "/"){
+////                call_user_func($callback, $update);
+////            }
+//        }
+    }
 
-            Updates::insert([
-                "id" => $update["update_id"]
-            ]);
-            if ($update->getMessage()["text"][0] != "/"){
-                call_user_func($callback, $update);
-            }
-        }
+    static function getLastUpdateId(){
+        return file_get_contents(Config::telegram("update_id_file"));
+    }
+
+    static function setLastUpdateId($id){
+        file_put_contents(Config::telegram("update_id_file"), $id);
     }
 }

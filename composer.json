@@ -6,7 +6,7 @@
         "catfan/medoo": "dev-master",
         "klein/klein": "dev-master",
         "ext-json": "*",
-        "irazasyed/telegram-bot-sdk": "^3.0@dev",
+        "irazasyed/telegram-bot-sdk": "^2.0",
         "php": ">=7.3"
     },
     "license": "MIT",
